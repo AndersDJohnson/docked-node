@@ -16,7 +16,7 @@ if [ ! -f package.json ]; then
 fi
 
 DOCKER_IMAGE_ID=$(cat .docked-node-image 2>/dev/null || true)
-PKG_SHA_OLD=$(cat .docked-node-package-hash 2>/dev/null || true)
+PKG_SHA_OLD=$(cat .docked-node-hash 2>/dev/null || true)
 PKG_SHA_NEW=$(shasum package.json | cut -d' ' -f 1)
 
 >&2 echo "Previous docker image: ${DOCKER_IMAGE_ID}"
@@ -29,7 +29,7 @@ PKG_SHA_NEW=$(shasum package.json | cut -d' ' -f 1)
 
 if $PKG_CHANGE || [ -z "$DOCKER_IMAGE_ID" ]; then
   rm -f .docked-node-image
-  echo "$PKG_SHA_NEW" > .docked-node-package-hash
+  echo "$PKG_SHA_NEW" > .docked-node-hash
   >&2 echo "No previous docker image, or package changes. Building docker image..."
   TMP_DOCKERFILE=$(mktemp .Dockerfile.XXXXXX)
   TMP_BUILD_OUT=$(mktemp .docker-build-out.XXXXXX)

@@ -1,6 +1,18 @@
 # docked-node
 > Easily run your node app in a docker image (with npm installs).
 
+Ever worried about the security of the npm ecosystem? The danger is real.
+
+A dependency you install from npm may contain malicious code that can run with your application. When you run your app locally with node, that code may have full access to your local environment variables, filesystem, etc.
+
+Even just installing a script via npm can have dangerous side effects. Straight from the horse's mouth (source):
+
+it is possible for a maliciously-written npm package, when installed, to execute a script.
+
+Things are even more dangerous with the prevalence of npx, which encourages immediate execution of unknown code on your local machine.
+
+## Solution
+
 Runs your node app inside an automatically-built Docker image that installs your npm dependencies.
 No need for a custom `Dockerfile` in your project - one will be generated for you at runtime.
 

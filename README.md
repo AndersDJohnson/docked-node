@@ -57,6 +57,8 @@ Running node inside docker container sha256:34c6f9f39dfcfc8543f80426fc88ed16220e
 hello from your node script
 ```
 
+It spits out messages and the `docker build` output to `stderr` so that your script's `stdout` is not affected.
+
 To run a script other than `main`, specify the path:
 
 ```console

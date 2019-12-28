@@ -36,10 +36,10 @@ if $PKG_CHANGE || [ -z "$DOCKER_IMAGE_ID" ]; then
   cat > "$TMP_DOCKERFILE" <<EOF
 FROM ${DOCKER_NODE_IMAGE}
 WORKDIR /app
-COPY . .
+COPY package.json .
 RUN npm install
-RUN npm run build || true
 COPY . .
+RUN npm run build || true
 RUN mv node_modules /
 CMD node .
 EOF

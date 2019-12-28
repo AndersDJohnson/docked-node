@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+"$(dirname "${(%):-%x}")/../docked-node.sh"

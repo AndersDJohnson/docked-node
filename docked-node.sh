@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-DOCKER_NODE_IMAGE="${DOCKER_NODE_IMAGE:-node}"
+DOCKED_NODE_IMAGE="${DOCKER_NODE_IMAGE:-node}"
+
+DOCKED_NODE_PRE_SCRIPT=""
+if [ ! -z "$DOCKED_NODE_PRE" ]; then
+  DOCKED_NODE_PRE_SCRIPT="RUN $DOCKED_NODE_PRE"
+fi
 
 clean() {
   rm -f .docker-node-Dockerfile
@@ -14,13 +19,13 @@ fi
 rm -f .docked-node-image
 >&2 echo "Building docker image..."
 cat > .docker-node-Dockerfile <<EOF
-FROM ${DOCKER_NODE_IMAGE}
+FROM ${DOCKED_NODE_IMAGE}
 WORKDIR /app
 COPY package.json .
 RUN npm install
 RUN mv node_modules /
 COPY . .
-RUN npm run build || true
+${DOCKED_NODE_PRE_SCRIPT}
 CMD node .
 EOF
 trap clean EXIT

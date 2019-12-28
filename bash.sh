@@ -2,7 +2,7 @@
 
 docked-node() {
   # shellcheck disable=SC1090,SC2128
-  "$(dirname "$BASH_SOURCE")/docked-node.sh"
+  "$(dirname "$BASH_SOURCE")/docked-node.sh" "$@"
 }
 
 # shellcheck disable=SC2053

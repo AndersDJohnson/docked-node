@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit
 
+DOCKER_NODE_IMAGE="${DOCKER_NODE_IMAGE:-node}"
+
 clean() {
   rm -f "$TMP_DOCKERFILE"
   rm -f "$TMP_BUILD_OUT"
@@ -10,14 +12,14 @@ docker-here() {
   docker run --interactive --tty --rm --mount src="$(pwd)",target=/app,type=bind --workdir /app "$@"
 }
 
-docker-npm() {
+docked-node() {
   if [ ! -f package.json ]; then
     echo "No package.json file found."
     exit 1
   fi
 
-  DOCKER_IMAGE=$(cat .docker-npm-image 2>/dev/null || true)
-  PKG_SHA_OLD=$(cat .docker-npm-package-hash 2>/dev/null || true)
+  DOCKER_IMAGE=$(cat .docked-node-image 2>/dev/null || true)
+  PKG_SHA_OLD=$(cat .docked-node-package-hash 2>/dev/null || true)
   PKG_SHA_NEW=$(shasum package.json | cut -d' ' -f 1)
 
   >&2 echo "Previous docker image: ${DOCKER_IMAGE}"
@@ -34,7 +36,7 @@ docker-npm() {
     TMP_DOCKERFILE=$(mktemp .Dockerfile.XXXXXX)
     TMP_BUILD_OUT=$(mktemp .docker-build-out.XXXXXX)
     cat > "$TMP_DOCKERFILE" <<EOF
-FROM node
+FROM ${DOCKER_NODE_IMAGE}
 WORKDIR /app
 COPY . .
 RUN npm install
@@ -47,8 +49,8 @@ EOF
     docker build --file "$TMP_DOCKERFILE" . > "$TMP_BUILD_OUT"
     DOCKER_IMAGE=$(tail -n 1 "$TMP_BUILD_OUT" | cut -d' ' -f 3)
     >&2 echo "Docker image built: ${DOCKER_IMAGE}"
-    echo "$DOCKER_IMAGE" > .docker-npm-image
-    echo "$PKG_SHA_NEW" > .docker-npm-package-hash
+    echo "$DOCKER_IMAGE" > .docked-node-image
+    echo "$PKG_SHA_NEW" > .docked-node-package-hash
     >&2 echo "Running node inside docker container ${DOCKER_IMAGE}..."
     >&2 echo ""
     docker run --interactive --tty --rm "$DOCKER_IMAGE" "$@"
@@ -62,8 +64,8 @@ EOF
 
 # shellcheck disable=SC2053
 if [[ ${BASH_SOURCE[0]} != $0 ]]; then
-  export -f docker-npm
+  export -f docked-node
 else
-  docker-npm "${@}"
+  docked-node "${@}"
   exit $?
 fi

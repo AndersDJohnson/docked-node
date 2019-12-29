@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOCKED_NODE_IMAGE="${DOCKER_NODE_IMAGE:-node}"
+DOCKED_NODE_IMAGE="${DOCKED_NODE_IMAGE:-node}"
 
 DOCKED_NODE_PRE_RUN=""
 if [ ! -z "$DOCKED_NODE_PRE" ]; then

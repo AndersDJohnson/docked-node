@@ -101,6 +101,17 @@ Running node inside docker container sha256:9da0b876ca10beb921db58781b4af8ef6b7c
 hey there from another node script
 ```
 
+To use a custom Docker base image (default `node` latest),
+you can set environment variable `DOCKED_NODE_IMAGE`:
+
+```console
+$ DOCKED_NODE_IMAGE="node:8" docked-node
+```
+
+```console
+$ DOCKED_NODE_IMAGE="node:alpine" docked-node
+```
+
 ## Install
 
 For `zsh`, in your `.zshrc`:

@@ -3,7 +3,7 @@
 DOCKED_NODE_IMAGE="${DOCKED_NODE_IMAGE:-node}"
 
 DOCKED_NODE_PRE_RUN=""
-if [ ! -z "$DOCKED_NODE_PRE" ]; then
+if [ -n "$DOCKED_NODE_PRE" ]; then
   DOCKED_NODE_PRE_RUN="RUN $DOCKED_NODE_PRE"
 fi
 

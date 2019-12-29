@@ -57,7 +57,7 @@ You can define a custom pre-script which will run after install but before execu
 via a `DOCKED_NODE_PRE` environment variable:
 
 ```console
-DOCKED_NODE_PRE="npm run build" docked-node
+$ DOCKED_NODE_PRE="npm run build" docked-node
 ```
 
 Due to Docker's caching, `npm install` will only happen when your `package.json` file changes,

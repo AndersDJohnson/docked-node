@@ -2,9 +2,9 @@
 
 DOCKED_NODE_IMAGE="${DOCKER_NODE_IMAGE:-node}"
 
-DOCKED_NODE_PRE_SCRIPT=""
+DOCKED_NODE_PRE_RUN=""
 if [ ! -z "$DOCKED_NODE_PRE" ]; then
-  DOCKED_NODE_PRE_SCRIPT="RUN $DOCKED_NODE_PRE"
+  DOCKED_NODE_PRE_RUN="RUN $DOCKED_NODE_PRE"
 fi
 
 clean() {
@@ -25,7 +25,7 @@ COPY package.json .
 RUN npm install
 RUN mv node_modules /
 COPY . .
-${DOCKED_NODE_PRE_SCRIPT}
+${DOCKED_NODE_PRE_RUN}
 CMD node .
 EOF
 trap clean EXIT

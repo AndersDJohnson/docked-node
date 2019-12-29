@@ -16,12 +16,6 @@ Things are even more dangerous with the prevalence of npx, which encourages imme
 Runs your node app inside an automatically-built Docker image that installs your npm dependencies.
 No need for a custom `Dockerfile` in your project - one will be generated for you at runtime.
 
-Due to Docker's caching, `npm install` will only happen when your `package.json` file changes,
-and `npm run build` will only happen when project files change.
-
-You can still use a custom `.dockerignore`
-to control which file changes should cause a re-run of `npm run build`.
-
 To run the `main` script in your `package.json`:
 
 ```console
@@ -58,6 +52,19 @@ hello from your node script
 ```
 
 It spits out messages and the `docker build` output to `stderr` so that your script's `stdout` is not affected.
+
+You can define a custom pre-script which will run after install but before executing `node`
+via a `DOCKED_NODE_PRE` environment variable:
+
+```console
+DOCKED_NODE_PRE="npm run build" docked-node
+```
+
+Due to Docker's caching, `npm install` will only happen when your `package.json` file changes,
+and your custom pre-script will only run when its source or the project files change.
+
+You can still use a custom `.dockerignore`
+to control which file changes should cause a re-build.
 
 To run a script other than `main`, specify the path:
 

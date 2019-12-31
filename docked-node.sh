@@ -16,6 +16,16 @@ if [ ! -f package.json ]; then
   exit 1
 fi
 
+NO_DOCKERIGNORE=false
+if [ ! -f .dockerignore ]; then
+  NO_DOCKERIGNORE=true
+  cat > .dockerignore <<EOF
+.git
+node_modules
+**/node_modules
+EOF
+fi
+
 rm -f .docked-node-image
 >&2 echo "Building docker image..."
 cat > .docker-node-Dockerfile <<EOF
@@ -30,6 +40,9 @@ CMD node .
 EOF
 trap clean EXIT
 docker build --file .docker-node-Dockerfile --iidfile .docked-node-image . 1>&2
+if $NO_DOCKERIGNORE; then
+  rm .dockerignore
+fi
 DOCKER_IMAGE_ID=$(cat .docked-node-image)
 >&2 echo "Running node inside docker container ${DOCKER_IMAGE_ID}..."
 >&2 echo ""

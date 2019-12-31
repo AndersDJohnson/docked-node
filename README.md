@@ -9,7 +9,7 @@ Even just installing a script via npm can have dangerous side effects. Straight 
 
 it is possible for a maliciously-written npm package, when installed, to execute a script.
 
-Things are even more dangerous with the prevalence of npx, which encourages immediate execution of unknown code on your local machine.
+Things are even more dangerous with the prevalence of `npx`, which encourages immediate execution of unknown code on your local machine. `docked-node` also supports running `npx` inside the container (see below).
 
 ## Solution
 
@@ -63,8 +63,7 @@ $ DOCKED_NODE_PRE="npm run build" docked-node
 Due to Docker's caching, `npm install` will only happen when your `package.json` file changes,
 and your custom pre-script will only run when its source or the project files change.
 
-You can still use a custom `.dockerignore`
-to control which file changes should cause a re-build.
+### Non-main scripts
 
 To run a script other than `main`, specify the path:
 
@@ -100,6 +99,55 @@ Running node inside docker container sha256:9da0b876ca10beb921db58781b4af8ef6b7c
 
 hey there from another node script
 ```
+
+### npx
+
+We'll mount local files into the container then run `npx`:
+
+```console
+$ docked-node npx cowsay moo
+Building docker image...
+Sending build context to Docker daemon  834.6kB
+Step 1/7 : FROM node
+ ---> f9cd651d1eb3
+Step 2/7 : WORKDIR /app
+ ---> Using cache
+ ---> 3a73e7f353f3
+Step 3/7 : COPY package.json .
+ ---> Using cache
+ ---> a07e756d7b4b
+Step 4/7 : RUN npm install
+ ---> Using cache
+ ---> 7b5a0dc2a62e
+Step 5/7 : RUN mv node_modules /
+ ---> Using cache
+ ---> 4ffee8a6a167
+Step 6/7 : COPY . .
+ ---> Using cache
+ ---> b6f9cf2e881d
+Step 7/7 : CMD node .
+ ---> Using cache
+ ---> 05d0c86bbb12
+Successfully built 05d0c86bbb12
+Running node inside docker container sha256:05d0c86bbb128ed7419e752af7c15ec356c40b8753d6f2c0418283e2e9412b70...
+
+npx: installed 10 in 2.291s
+ _____
+< moo >
+ -----
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+### .dockerignore
+
+You can still use a custom `.dockerignore`
+to control which file changes should cause a re-build.
+
+### Custom Docker image
 
 To use a custom Docker base image (default `node` latest),
 you can set environment variable `DOCKED_NODE_IMAGE`:

@@ -160,6 +160,22 @@ $ DOCKED_NODE_IMAGE="node:8" docked-node
 $ DOCKED_NODE_IMAGE="node:alpine" docked-node
 ```
 
+### Package manager
+
+By default, `docked-node` selects the package manager from the `packageManager`
+field in `package.json`, then from a lockfile (`pnpm-lock.yaml`, `yarn.lock`,
+`package-lock.json`, or `npm-shrinkwrap.json`). If neither is present, it uses npm.
+Set `DOCKED_NODE_PACKAGE_MANAGER` to override automatic detection:
+
+```console
+$ DOCKED_NODE_PACKAGE_MANAGER="yarn" docked-node
+$ DOCKED_NODE_PACKAGE_MANAGER="pnpm" docked-node
+```
+
+If multiple lockfiles are present, `pnpm-lock.yaml` takes precedence over
+`yarn.lock`, which takes precedence over npm lockfiles. The selected package
+manager must be available in the Docker image.
+
 ## Install
 
 For `zsh`, in your `.zshrc`:

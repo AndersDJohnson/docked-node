@@ -160,6 +160,17 @@ $ DOCKED_NODE_IMAGE="node:8" docked-node
 $ DOCKED_NODE_IMAGE="node:alpine" docked-node
 ```
 
+### Package manager
+
+To use a package manager other than npm, set `DOCKED_NODE_PACKAGE_MANAGER`:
+
+```console
+$ DOCKED_NODE_PACKAGE_MANAGER="yarn" docked-node
+$ DOCKED_NODE_PACKAGE_MANAGER="pnpm" docked-node
+```
+
+The selected package manager must be available in the Docker image.
+
 ## Install
 
 For `zsh`, in your `.zshrc`:

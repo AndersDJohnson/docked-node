@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 DOCKED_NODE_IMAGE="${DOCKED_NODE_IMAGE:-node}"
+DOCKED_NODE_PACKAGE_MANAGER="${DOCKED_NODE_PACKAGE_MANAGER:-npm}"
 
 DOCKED_NODE_PRE_RUN=""
 if [ -n "$DOCKED_NODE_PRE" ]; then
@@ -32,7 +33,7 @@ cat > .docker-node-Dockerfile <<EOF
 FROM ${DOCKED_NODE_IMAGE}
 WORKDIR /app
 COPY package.json .
-RUN npm install
+RUN ${DOCKED_NODE_PACKAGE_MANAGER} install
 RUN mv node_modules /
 COPY . .
 ${DOCKED_NODE_PRE_RUN}

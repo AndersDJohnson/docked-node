@@ -1,6 +1,12 @@
 # docked-node
 > Easily run your node app in a docker image (with npm installs).
 
+> [!WARNING]
+> Instead of this tool, we might typically suggest using [Dev Containers](https://containers.dev).
+
+> [!NOTE]
+> Read a blog post about this at [Docker Node Workflow](https://andersdjohnson.com/posts/docker-node-workflow).
+
 Ever worried about the security of the npm ecosystem? The danger is real.
 
 A dependency you install from npm may contain malicious code that can run with your application. When you run your app locally with node, that code may have full access to your local environment variables, filesystem, etc.
